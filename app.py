@@ -47,7 +47,7 @@ def after_request(response):
 @app.route("/")
 @login_required
 def index():
-    def index():
+    
     """Show portfolio of stocks"""
     user = db.execute("SELECT * FROM users WHERE id = ?", session["user_id"])
     print('user', user)
