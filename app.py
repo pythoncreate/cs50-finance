@@ -47,10 +47,27 @@ def after_request(response):
 @app.route("/")
 @login_required
 def index():
+    def index():
     """Show portfolio of stocks"""
     user = db.execute("SELECT * FROM users WHERE id = ?", session["user_id"])
-    data = db.execute("SELECT symbol, name, sum(shares) as total_shares, sum(total) as total FROM purchases WHERE user_id = ? group by symbol HAVING total_shares>0", user[0]["id"])
-    total_purchases = db.execute("SELECT sum(total) as total FROM purchases WHERE user_id = ?", user[0]["id"])
+    print('user', user)
+    try:
+        data = db.execute("SELECT symbol, name, sum(shares) as total_shares, sum(total) as total FROM purchases WHERE user_id = ? group by symbol HAVING total_shares>0", user[0]["id"])
+        total_purchases = db.execute("SELECT sum(total) as total FROM purchases WHERE user_id = ?", user[0]["id"])
+        stock_prices = []
+
+        for stock in data:
+            stocks = {}
+            price = lookup(stock['symbol'])
+            stocks['symbol'] = stock['symbol']
+            stocks['price'] = price['price']
+            stock_prices.append(stocks)
+        if data:
+            price = lookup(data[0]["symbol"])
+            stock_price = price["price"]
+            return render_template("index.html", user=user[0], data= zip(data,stock_prices), total=total_purchases[0]['total'])
+    except:
+        return render_template("starter.html", user=user[0])
 
     # get the total for all owned shares based on share count and current share price
     print('Data', data)
@@ -69,6 +86,7 @@ def index():
         return render_template("index.html", user=user[0], data= zip(data,stock_prices), total=total_purchases[0]['total'])
     else:
         return render_template("starter.html", user=user[0])
+
 
 @app.route("/buy", methods=["GET", "POST"])
 @login_required
