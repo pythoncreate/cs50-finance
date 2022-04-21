@@ -1,0 +1,53 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Quote
+{% endblock %}
+
+{% block main %}
+
+<table class="table">
+    <thead>
+        <tr>
+          <th scope="col">Symbol</th>
+          <th scope="col">Name</th>
+          <th scope="col">Shares</th>
+          <th scope="col">Price</th>
+          <th scope="col">Total</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        {% set ns = namespace(total=0) %}
+        {% for i, o in data %}
+        {% set ns.total = ns.total + i['total_shares']*o['price']%}
+        <tr>
+          <td>{{i['symbol']}}</th>
+          <td>{{i['name']}}</td>
+          <td>{{i['total_shares']}}</td>
+          <td>{{o['price']|usd}}
+          </td>
+          <td>{{(i['total_shares']*o['price'])|usd}}</td>
+        </tr>
+        {% endfor %}
+        <tr>
+            <td></th>
+            <td></td>
+            <td></td>
+            <td><strong>Cash</strong></td>
+            <td>{{user['cash']|usd}}</td>
+          </tr>
+          <tr>
+            <td></th>
+            <td></td>
+            <td></td>
+            <td><strong>Total</strong></td>
+            <td>{{(ns.total+user['cash'])|usd}}</td>
+          </tr>
+        </tbody>
+
+    </table>
+
+</table>
+
+{% endblock %}

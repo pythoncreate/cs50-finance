@@ -1,0 +1,50 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Starter
+{% endblock %}
+
+{% block main %}
+
+<table class="table">
+    <thead>
+        <tr>
+          <th scope="col">Symbol</th>
+          <th scope="col">Name</th>
+          <th scope="col">Shares</th>
+          <th scope="col">Price</th>
+          <th scope="col">Total</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <tr>
+          <td> </th>
+          <td></td>
+          <td></td>
+          <td>
+          </td>
+          <td></td>
+        </tr>
+
+        <tr>
+            <td></th>
+            <td></td>
+            <td></td>
+            <td><strong>Cash</strong></td>
+            <td>{{user['cash']|usd}}</td>
+          </tr>
+          <tr>
+            <td></th>
+            <td></td>
+            <td></td>
+            <td><strong>Total</strong></td>
+            <td>{{user['cash']|usd}}</td>
+          </tr>
+        </tbody>
+
+    </table>
+
+</table>
+
+{% endblock %}
